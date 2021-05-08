@@ -50,6 +50,7 @@ p {
 .footer, .minmax {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .minmax {

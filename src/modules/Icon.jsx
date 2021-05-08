@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Icon() {
+function Icon({ icon }) {
     return (
 
-        <img src='http://openweathermap.org/img/wn/10n@2x.png' alt="" />
+        <img src={icon} alt="" />
 
     );
 }

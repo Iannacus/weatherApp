@@ -1,10 +1,10 @@
 import React from 'react';
 
-function Date() {
+function Date({ value }) {
     return (
         <div>
 
-            <p>8 de Mayo 2021</p>
+            {value}
 
         </div>
 

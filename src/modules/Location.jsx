@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Location() {
+function Location({ ubication }) {
     return (
-        <div className='location'>Campeche, México</div>
+        <div className='location'>{ubication}</div>
 
     );
 }
