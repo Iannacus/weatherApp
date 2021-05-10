@@ -2,7 +2,7 @@ import React from 'react';
 
 function Date({ value }) {
     return (
-        <div>
+        <div className='date'>
 
             {value}
 

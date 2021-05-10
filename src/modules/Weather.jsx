@@ -7,6 +7,7 @@ import Date from './Date';
 import Button from './Button';
 import DateObject from "react-date-object";
 import Loader from './Loader';
+import Daily from './Daily';
 
 function Weather() {
     const [data, setData] = useState({});
@@ -24,6 +25,25 @@ function Weather() {
     const [unit, setUnit] = useState('C');
     const [display, setDisplay] = useState('none');
     const [displayLoading, setDisplayLoading] = useState('block')
+    const [icon1, setIcon1] = useState('');
+    const [icon2, setIcon2] = useState('');
+    const [icon3, setIcon3] = useState('');
+    const [icon4, setIcon4] = useState('');
+    const [icon5, setIcon5] = useState('');
+    const [icon6, setIcon6] = useState('');
+    const [temp1, setTemp1] = useState(0);
+    const [temp2, setTemp2] = useState(0);
+    const [temp3, setTemp3] = useState(0);
+    const [temp4, setTemp4] = useState(0);
+    const [temp5, setTemp5] = useState(0);
+    const [temp6, setTemp6] = useState(0);
+    const [day1, setDay1] = useState('');
+    const [day2, setDay2] = useState('');
+    const [day3, setDay3] = useState('');
+    const [day4, setDay4] = useState('');
+    const [day5, setDay5] = useState('');
+    const [day6, setDay6] = useState('');
+
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -42,21 +62,44 @@ function Weather() {
 
     useEffect(() => {
         if (Object.entries(data).length > 0) {
-            //console.log(data);
+            console.log(data);
             SetIsData(true);
             //console.log(data.current.weather[0].description)
             setDescription(data.current.weather[0].description);
-            setIcon(`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
-            setCurrentTemp(parseCelsius(data.current.temp))
+            setIcon(getIconUrl(data.current.weather[0].icon));
+            setCurrentTemp(parseCelsius(data.current.temp));
             setMaxtemp(parseCelsius(data.daily[0].temp.max));
-            setMinTemp(parseCelsius(data.daily[0].temp.min))
-            setCurrentDate(parseDate(data.current.dt))
+            setMinTemp(parseCelsius(data.daily[0].temp.min));
+            setCurrentDate(parseDate(data.current.dt));
+
+            setIcon1(getIconUrl(data.daily[1].weather[0].icon));
+            setIcon2(getIconUrl(data.daily[2].weather[0].icon));
+            setIcon3(getIconUrl(data.daily[3].weather[0].icon));
+            setIcon4(getIconUrl(data.daily[4].weather[0].icon));
+            setIcon5(getIconUrl(data.daily[5].weather[0].icon));
+            setIcon6(getIconUrl(data.daily[6].weather[0].icon));
+
+            setTemp1(parseCelsius(data.daily[1].temp.day));
+            setTemp2(parseCelsius(data.daily[2].temp.day));
+            setTemp3(parseCelsius(data.daily[3].temp.day));
+            setTemp4(parseCelsius(data.daily[4].temp.day));
+            setTemp5(parseCelsius(data.daily[5].temp.day));
+            setTemp6(parseCelsius(data.daily[6].temp.day));
+
+            setDay1(parseDayDate(data.daily[1].dt));
+            setDay2(parseDayDate(data.daily[2].dt));
+            setDay3(parseDayDate(data.daily[3].dt));
+            setDay4(parseDayDate(data.daily[4].dt));
+            setDay5(parseDayDate(data.daily[5].dt));
+            setDay6(parseDayDate(data.daily[6].dt));
+
+
         }
     }, [data]);
 
+
     useEffect(() => {
         if (Object.entries(geoData).length > 0) {
-            //console.log(geoData)
             SetIsData2(true);
             const county = geoData.address.county === undefined ? '' : geoData.address.county + ', ';
             const state = geoData.address.state === undefined ? '' : geoData.address.state + ', ';
@@ -68,12 +111,15 @@ function Weather() {
 
 
     if (isData && isData2) {
-        //console.log(geoData)
         SetIsData(false);
         SetIsData2(false);
         setDisplay('block');
         setDisplayLoading('none');
 
+    }
+
+    function getIconUrl(icon) {
+        return `http://openweathermap.org/img/wn/${icon}@2x.png`
     }
 
     function parseCelsius(t) {
@@ -115,9 +161,15 @@ function Weather() {
         return `${date.weekDay.name} ${date.day} ${date.month.name} ${date.year}`;
     }
 
+    function parseDayDate(dt) {
+        const date = new DateObject(dt * 1000);
+        console.log(date.weekDay.shortName)
+        return `${date.weekDay.shortName}`;
+    }
+
     return (
 
-        <div className='weather'  >
+        <div className='weather translucid'  >
             <Loader
                 visible={displayLoading}
             />
@@ -136,7 +188,7 @@ function Weather() {
                 />
                 <div className='currrentTmp'>
                     <Temperature
-                        value={currentTemp}
+                        temp={currentTemp}
                         font={96}
                         unit={unit}
                     />
@@ -152,16 +204,69 @@ function Weather() {
                     />
                     <div className='minmax'>
                         <Temperature
-                            value={minTemp}
-                            font={16}
+                            temp={minTemp}
+                            font={24}
                             unit={unit}
                         />
                         <Temperature
-                            value={maxTemp}
-                            font={16}
+                            temp={maxTemp}
+                            font={24}
                             unit={unit}
                         />
                     </div>
+                </div>
+                <div className='daily translucid'>
+                    <div className='day'>
+                        <Daily
+                            icon={icon1}
+                            temp={temp1}
+                            unit={unit}
+                            day={day1}
+                        />
+                    </div>
+                    <div className='day' >
+                        <Daily
+                            icon={icon2}
+                            temp={temp2}
+                            unit={unit}
+                            day={day2}
+                        />
+                    </div>
+                    <div className='day' >
+                        <Daily
+                            icon={icon3}
+                            temp={temp3}
+                            unit={unit}
+                            day={day3}
+                        />
+                    </div>
+                    <div className='day' >
+                        <Daily
+                            icon={icon4}
+                            temp={temp4}
+                            unit={unit}
+                            day={day4}
+                        />
+                    </div>
+
+                    <div className='day' >
+                        <Daily
+                            icon={icon5}
+                            temp={temp5}
+                            unit={unit}
+                            day={day5}
+                        />
+                    </div>
+
+                    <div className='day' >
+                        <Daily
+                            icon={icon6}
+                            temp={temp6}
+                            unit={unit}
+                            day={day6}
+                        />
+                    </div>
+
                 </div>
             </div>
         </div>

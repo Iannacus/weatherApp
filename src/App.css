@@ -28,7 +28,8 @@ p {
 }
 
 .location {
-  text-align: left;
+  text-align: center;
+  font-size: 30px;
 }
 
 @keyframes App-logo-spin {
@@ -40,8 +41,11 @@ p {
   }
 }
 
+.translucid {
+  background-color: rgba(0,0,0, 0.2);
+}
+
 .weather {
-  background-color: rgba(0,0,0, 0.4);
   width: 90%;
   border-radius: 10px;
   padding: 20px;
@@ -60,6 +64,9 @@ p {
   align-items: center;
 }
 
+.date {
+  font-size: 24px;
+}
 
 
 .temperature p {
@@ -100,6 +107,52 @@ p {
   }
   100%{
     transform: rotate(360deg);
+  }
+}
+
+.daily {
+  border-radius: 7px;
+  padding: 10px;
+  
+}
+
+.daily img {
+  width: 50px;
+}
+
+.day{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+@media (min-width: 768px){
+  .daily img {
+    width: 100px;
+  }
+}
+
+@media(min-width: 540px){
+  
+  .daily img {
+    width: 70px;
+  }
+
+  
+}
+
+@media (min-width: 420px) {
+  .daily {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    
+  }
+  .daily img {
+    width: 50px;
+  }
+  .day {
+    display: block; 
   }
 }
 
