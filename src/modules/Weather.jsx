@@ -6,9 +6,13 @@ import Temperature from './Temperature';
 import Date from './Date';
 import Button from './Button';
 import DateObject from "react-date-object";
+import Loader from './Loader';
 
 function Weather() {
     const [data, setData] = useState({});
+    const [geoData, setGeoData] = useState({});
+    const [isData, SetIsData] = useState(false);
+    const [isData2, SetIsData2] = useState(false);
     const [icon, setIcon] = useState('');
     const [description, setDescription] = useState('');
     const [ubication, setUbication] = useState('');
@@ -18,22 +22,38 @@ function Weather() {
     const [currentDate, setCurrentDate] = useState('');
     const [isCelsius, setIsCelsius] = useState(true);
     const [unit, setUnit] = useState('C');
+    const [display, setDisplay] = useState('block');
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
+
             fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=c233734c38c406630acd8f156b740270`)
                 .then(response => response.json())
                 .then(info => setData(info));
+
+            // fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=c233734c38c406630acd8f156b740270`)
+            //     .then(response => response.json())
+            //     .then(oneData => console.log(oneData));
         });
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            fetch(`https://us1.locationiq.com/v1/reverse.php?key=pk.8fbc777f6aa3501fd90aad14920bfd41&lat=${lat}&lon=${lon}&format=json`)
+                .then(response => response.json())
+                .then(info => setGeoData(info));
+        });
+    }, []); // eslint-disable-next-line
 
     useEffect(() => {
         if (Object.entries(data).length > 0) {
             console.log(data);
-            const location = `${data.name}, ${data.sys.country}`
-            setUbication(location);
+            SetIsData(true);
             setDescription(data.weather[0].description);
             setIcon(`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
             setCurrentTemp(parseCelsius(data.main.temp))
@@ -43,6 +63,24 @@ function Weather() {
         }
     }, [data]);
 
+    useEffect(() => {
+        if (Object.entries(geoData).length > 0) {
+            console.log(geoData)
+            SetIsData2(true);
+            const location = `${geoData.address.city}, ${geoData.address.state}, ${geoData.address.country}`
+            setUbication(location);
+        }
+    }, [geoData]);
+
+
+    if (isData && isData2) {
+        console.log('componentes cargados');
+        SetIsData(false);
+        SetIsData2(false);
+        console.log(display)
+        setDisplay('none');
+        console.log(display)
+    }
 
     function parseCelsius(t) {
         const temp = t - 273.15;
@@ -84,8 +122,11 @@ function Weather() {
     }
 
     return (
-        <div className='weather' >
 
+        <div className='weather' >
+            <Loader
+                visible={display}
+            />
             <Location
                 ubication={ubication}
             />
