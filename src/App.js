@@ -3,7 +3,8 @@ import Weather from './modules/Weather'
 
 function App() {
   return (
-    <div className="App" style={{ background: '#28DEB6' }}>
+    <div className="App">
+      <h1>Weather App</h1>
       <Weather />
     </div>
   );

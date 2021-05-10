@@ -138,11 +138,17 @@ function Weather() {
         return c.toFixed(1);
     }
 
-    function convertTemp(temp, minTemp, maxTemp) {
+    function convertTemp(temp, temp1, temp2, temp3, temp4, temp5, temp6, minTemp, maxTemp) {
         if (isCelsius) {
             setIsCelsius(false);
             setUnit('F');
             setCurrentTemp(toFarenheit(temp));
+            setTemp1(toFarenheit(temp1));
+            setTemp2(toFarenheit(temp2));
+            setTemp3(toFarenheit(temp3));
+            setTemp4(toFarenheit(temp4));
+            setTemp5(toFarenheit(temp5));
+            setTemp6(toFarenheit(temp6));
             setMinTemp(toFarenheit(minTemp));
             setMaxtemp(toFarenheit(maxTemp));
 
@@ -150,6 +156,12 @@ function Weather() {
             setIsCelsius(true);
             setUnit('C')
             setCurrentTemp(toCelsius(temp));
+            setTemp1(toCelsius(temp1));
+            setTemp2(toCelsius(temp2));
+            setTemp3(toCelsius(temp3));
+            setTemp4(toCelsius(temp4));
+            setTemp5(toCelsius(temp5));
+            setTemp6(toCelsius(temp6));
             setMinTemp(toCelsius(minTemp));
             setMaxtemp(toCelsius(maxTemp));
         }
@@ -198,8 +210,15 @@ function Weather() {
                     <Button
                         setValue={convertTemp}
                         value={currentTemp}
+                        value1={temp1}
+                        value2={temp2}
+                        value3={temp3}
+                        value4={temp4}
+                        value5={temp5}
+                        value6={temp6}
                         minValue={minTemp}
                         maxValue={maxTemp}
+
                         unit={unit}
                     />
                     <div className='minmax'>
@@ -216,58 +235,45 @@ function Weather() {
                     </div>
                 </div>
                 <div className='daily translucid'>
-                    <div className='day'>
-                        <Daily
-                            icon={icon1}
-                            temp={temp1}
-                            unit={unit}
-                            day={day1}
-                        />
-                    </div>
-                    <div className='day' >
-                        <Daily
-                            icon={icon2}
-                            temp={temp2}
-                            unit={unit}
-                            day={day2}
-                        />
-                    </div>
-                    <div className='day' >
-                        <Daily
-                            icon={icon3}
-                            temp={temp3}
-                            unit={unit}
-                            day={day3}
-                        />
-                    </div>
-                    <div className='day' >
-                        <Daily
-                            icon={icon4}
-                            temp={temp4}
-                            unit={unit}
-                            day={day4}
-                        />
-                    </div>
 
-                    <div className='day' >
-                        <Daily
-                            icon={icon5}
-                            temp={temp5}
-                            unit={unit}
-                            day={day5}
-                        />
-                    </div>
-
-                    <div className='day' >
-                        <Daily
-                            icon={icon6}
-                            temp={temp6}
-                            unit={unit}
-                            day={day6}
-                        />
-                    </div>
-
+                    <Daily
+                        icon={icon1}
+                        temp={temp1}
+                        unit={unit}
+                        day={day1}
+                    />
+                    < Daily
+                        icon={icon2}
+                        temp={temp2}
+                        unit={unit}
+                        day={day2}
+                    />
+                    <Daily
+                        icon={icon3}
+                        temp={temp3}
+                        unit={unit}
+                        day={day3}
+                    />
+                    <Daily
+                        icon={icon4}
+                        temp={temp4}
+                        unit={unit}
+                        day={day4}
+                    />
+                    <Daily
+                        icon={icon5}
+                        temp={temp5}
+                        unit={unit}
+                        day={day5}
+                    />
+                    <Daily
+                        icon={icon6}
+                        temp={temp6}
+                        unit={unit}
+                        day={day6}
+                    />
                 </div>
+
             </div>
         </div>
     );
