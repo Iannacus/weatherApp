@@ -4,10 +4,10 @@ import Icon from './Icon';
 import Description from './Description'
 import Temperature from './Temperature';
 import Date from './Date';
+import Button from './Button';
 import DateObject from "react-date-object";
 
 function Weather() {
-
     const [data, setData] = useState({});
     const [icon, setIcon] = useState('');
     const [description, setDescription] = useState('');
@@ -16,6 +16,8 @@ function Weather() {
     const [maxTemp, setMaxtemp] = useState(0);
     const [minTemp, setMinTemp] = useState(0);
     const [currentDate, setCurrentDate] = useState('');
+    const [isCelsius, setIsCelsius] = useState(true);
+    const [unit, setUnit] = useState('C');
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -29,7 +31,7 @@ function Weather() {
 
     useEffect(() => {
         if (Object.entries(data).length > 0) {
-            //console.log(data);
+            console.log(data);
             const location = `${data.name}, ${data.sys.country}`
             setUbication(location);
             setDescription(data.weather[0].description);
@@ -47,9 +49,37 @@ function Weather() {
         return temp.toFixed(1);
     }
 
+    function toFarenheit(celsius) {
+        const f = (celsius * 9 / 5) + 32;
+        return f.toFixed(1);
+    }
+
+    function toCelsius(farenheit) {
+
+        const c = (farenheit - 32) * 5 / 9;
+        return c.toFixed(1);
+    }
+
+    function convertTemp(temp, minTemp, maxTemp) {
+        if (isCelsius) {
+            setIsCelsius(false);
+            setUnit('F');
+            setCurrentTemp(toFarenheit(temp));
+            setMinTemp(toFarenheit(minTemp));
+            setMaxtemp(toFarenheit(maxTemp));
+
+        } else {
+            setIsCelsius(true);
+            setUnit('C')
+            setCurrentTemp(toCelsius(temp));
+            setMinTemp(toCelsius(minTemp));
+            setMaxtemp(toCelsius(maxTemp));
+        }
+
+    }
+
     function parseDate(dt) {
         const date = new DateObject(dt * 1000);
-        //console.log(`${date.weekDay.name} ${date.day} ${date.month.name} ${date.year}`)
         return `${date.weekDay.name} ${date.day} ${date.month.name} ${date.year}`;
     }
 
@@ -69,20 +99,30 @@ function Weather() {
                 <Temperature
                     value={currentTemp}
                     font={96}
+                    unit={unit}
                 />
             </div>
             <div className='footer'>
                 <Date
                     value={currentDate}
                 />
+                <Button
+                    setValue={convertTemp}
+                    value={currentTemp}
+                    minValue={minTemp}
+                    maxValue={maxTemp}
+                    unit={unit}
+                />
                 <div className='minmax'>
                     <Temperature
                         value={minTemp}
                         font={16}
+                        unit={unit}
                     />
                     <Temperature
                         value={maxTemp}
                         font={16}
+                        unit={unit}
                     />
                 </div>
             </div>

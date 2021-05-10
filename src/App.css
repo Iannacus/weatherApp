@@ -42,9 +42,16 @@ p {
 
 .weather {
   background-color: rgba(0,0,0, 0.4);
-  width: 70%;
+  width: 90%;
   border-radius: 10px;
   padding: 20px;
+}
+
+@media (min-width: 768px ){
+  .weather{
+    max-width: 700px;
+    padding: 60px;
+  }
 }
 
 .footer, .minmax {
@@ -53,11 +60,26 @@ p {
   align-items: center;
 }
 
-.minmax {
-  gap: 25px;
-}
+
 
 .temperature p {
   margin: 10px;
 }
 
+.button {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  padding: 7px;
+  border: none;
+  border-radius: 7px;
+  background-color: transparent;
+  color: white;
+  border: solid 2px white;
+}
+
+.button:hover {
+  cursor: pointer;
+  border: none;
+  color: rgb(24,103,133);
+  background-color: white;
+}
