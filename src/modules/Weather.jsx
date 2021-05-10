@@ -62,9 +62,7 @@ function Weather() {
 
     useEffect(() => {
         if (Object.entries(data).length > 0) {
-            console.log(data);
             SetIsData(true);
-            //console.log(data.current.weather[0].description)
             setDescription(data.current.weather[0].description);
             setIcon(getIconUrl(data.current.weather[0].icon));
             setCurrentTemp(parseCelsius(data.current.temp));
@@ -175,8 +173,7 @@ function Weather() {
 
     function parseDayDate(dt) {
         const date = new DateObject(dt * 1000);
-        console.log(date.weekDay.shortName)
-        return `${date.weekDay.shortName}`;
+        return `${date.weekDay.shortName} ${date.day}`;
     }
 
     return (
