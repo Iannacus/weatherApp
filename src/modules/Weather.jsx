@@ -42,9 +42,9 @@ function Weather() {
 
     useEffect(() => {
         if (Object.entries(data).length > 0) {
-            console.log(data);
+            //console.log(data);
             SetIsData(true);
-            console.log(data.current.weather[0].description)
+            //console.log(data.current.weather[0].description)
             setDescription(data.current.weather[0].description);
             setIcon(`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
             setCurrentTemp(parseCelsius(data.current.temp))
@@ -56,15 +56,19 @@ function Weather() {
 
     useEffect(() => {
         if (Object.entries(geoData).length > 0) {
-            console.log(geoData)
+            //console.log(geoData)
             SetIsData2(true);
-            const location = `${geoData.address.city}, ${geoData.address.state}, ${geoData.address.country}`
+            const county = geoData.address.county === undefined ? '' : geoData.address.county + ', ';
+            const state = geoData.address.state === undefined ? '' : geoData.address.state + ', ';
+            const country = geoData.address.country === undefined ? '' : geoData.address.country;
+            const location = `${county}${state}${country}`
             setUbication(location);
         }
     }, [geoData]);
 
 
     if (isData && isData2) {
+        //console.log(geoData)
         SetIsData(false);
         SetIsData2(false);
         setDisplay('block');
@@ -121,6 +125,9 @@ function Weather() {
                 <Location
                     ubication={ubication}
                 />
+                <Date
+                    value={currentDate}
+                />
                 <Icon
                     icon={icon}
                 />
@@ -135,9 +142,7 @@ function Weather() {
                     />
                 </div>
                 <div className='footer'>
-                    <Date
-                        value={currentDate}
-                    />
+
                     <Button
                         setValue={convertTemp}
                         value={currentTemp}
