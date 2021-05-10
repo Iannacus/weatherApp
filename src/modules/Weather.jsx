@@ -22,44 +22,35 @@ function Weather() {
     const [currentDate, setCurrentDate] = useState('');
     const [isCelsius, setIsCelsius] = useState(true);
     const [unit, setUnit] = useState('C');
-    const [display, setDisplay] = useState('block');
+    const [display, setDisplay] = useState('none');
+    const [displayLoading, setDisplayLoading] = useState('block')
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
-            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=c233734c38c406630acd8f156b740270`)
+            fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=c233734c38c406630acd8f156b740270`)
                 .then(response => response.json())
                 .then(info => setData(info));
-
-            // fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=c233734c38c406630acd8f156b740270`)
-            //     .then(response => response.json())
-            //     .then(oneData => console.log(oneData));
-        });
-    }, []);
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
 
             fetch(`https://us1.locationiq.com/v1/reverse.php?key=pk.8fbc777f6aa3501fd90aad14920bfd41&lat=${lat}&lon=${lon}&format=json`)
                 .then(response => response.json())
                 .then(info => setGeoData(info));
         });
-    }, []); // eslint-disable-next-line
+    }, []);
 
     useEffect(() => {
         if (Object.entries(data).length > 0) {
             console.log(data);
             SetIsData(true);
-            setDescription(data.weather[0].description);
-            setIcon(`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
-            setCurrentTemp(parseCelsius(data.main.temp))
-            setMaxtemp(parseCelsius(data.main.temp_max));
-            setMinTemp(parseCelsius(data.main.temp_min))
-            setCurrentDate(parseDate(data.dt))
+            console.log(data.current.weather[0].description)
+            setDescription(data.current.weather[0].description);
+            setIcon(`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
+            setCurrentTemp(parseCelsius(data.current.temp))
+            setMaxtemp(parseCelsius(data.daily[0].temp.max));
+            setMinTemp(parseCelsius(data.daily[0].temp.min))
+            setCurrentDate(parseDate(data.current.dt))
         }
     }, [data]);
 
@@ -74,12 +65,11 @@ function Weather() {
 
 
     if (isData && isData2) {
-        console.log('componentes cargados');
         SetIsData(false);
         SetIsData2(false);
-        console.log(display)
-        setDisplay('none');
-        console.log(display)
+        setDisplay('block');
+        setDisplayLoading('none');
+
     }
 
     function parseCelsius(t) {
@@ -123,48 +113,50 @@ function Weather() {
 
     return (
 
-        <div className='weather' >
+        <div className='weather'  >
             <Loader
-                visible={display}
+                visible={displayLoading}
             />
-            <Location
-                ubication={ubication}
-            />
-            <Icon
-                icon={icon}
-            />
-            <Description
-                description={description}
-            />
-            <div className='currrentTmp'>
-                <Temperature
-                    value={currentTemp}
-                    font={96}
-                    unit={unit}
+            <div style={{ display: display }}>
+                <Location
+                    ubication={ubication}
                 />
-            </div>
-            <div className='footer'>
-                <Date
-                    value={currentDate}
+                <Icon
+                    icon={icon}
                 />
-                <Button
-                    setValue={convertTemp}
-                    value={currentTemp}
-                    minValue={minTemp}
-                    maxValue={maxTemp}
-                    unit={unit}
+                <Description
+                    description={description}
                 />
-                <div className='minmax'>
+                <div className='currrentTmp'>
                     <Temperature
-                        value={minTemp}
-                        font={16}
+                        value={currentTemp}
+                        font={96}
                         unit={unit}
                     />
-                    <Temperature
-                        value={maxTemp}
-                        font={16}
+                </div>
+                <div className='footer'>
+                    <Date
+                        value={currentDate}
+                    />
+                    <Button
+                        setValue={convertTemp}
+                        value={currentTemp}
+                        minValue={minTemp}
+                        maxValue={maxTemp}
                         unit={unit}
                     />
+                    <div className='minmax'>
+                        <Temperature
+                            value={minTemp}
+                            font={16}
+                            unit={unit}
+                        />
+                        <Temperature
+                            value={maxTemp}
+                            font={16}
+                            unit={unit}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
