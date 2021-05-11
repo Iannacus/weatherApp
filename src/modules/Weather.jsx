@@ -68,7 +68,6 @@ function Weather() {
     useEffect(() => {
         //Load data when data object have api request data 
         if (Object.entries(data).length > 0) {
-            console.log(data);
             SetIsData(true);
             //Main data
             setDescription(data.current.weather[0].description);
@@ -128,7 +127,7 @@ function Weather() {
 
     //get icon url from icon id
     const getIconUrl = (icon) => {
-        return `http://openweathermap.org/img/wn/${icon}@2x.png`
+        return `https://openweathermap.org/img/wn/${icon}@2x.png`
     }
 
     //convert farenheit temperature gotten from openweathere api
