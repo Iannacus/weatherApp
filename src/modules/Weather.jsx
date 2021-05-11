@@ -8,6 +8,7 @@ import Button from './Button';
 import DateObject from "react-date-object";
 import Loader from './Loader';
 import Daily from './Daily';
+import bgObj from './bgObj.json'
 
 function Weather() {
 
@@ -44,6 +45,7 @@ function Weather() {
     const [day4, setDay4] = useState('');
     const [day5, setDay5] = useState('');
     const [day6, setDay6] = useState('');
+    const [bg, setBg] = useState('#575757');
 
 
     useEffect(() => {
@@ -93,7 +95,7 @@ function Weather() {
             setDay4(parseDayDate(data.daily[4].dt));
             setDay5(parseDayDate(data.daily[5].dt));
             setDay6(parseDayDate(data.daily[6].dt));
-
+            setBg(handdleBg(data.current.weather[0].icon));
 
         }
     }, [data]);
@@ -121,31 +123,31 @@ function Weather() {
     }
 
     //get icon url from icon id
-    function getIconUrl(icon) {
+    const getIconUrl = (icon) => {
         return `http://openweathermap.org/img/wn/${icon}@2x.png`
     }
 
     //convert farenheit temperature gotten from openweathere api
 
-    function parseCelsius(t) {
+    const parseCelsius = (t) => {
         const temp = t - 273.15;
         return temp.toFixed(1);
     }
 
 
-    function toFarenheit(celsius) {
+    const toFarenheit = (celsius) => {
         const f = (celsius * 9 / 5) + 32;
         return f.toFixed(1);
     }
 
-    function toCelsius(farenheit) {
+    const toCelsius = (farenheit) => {
 
         const c = (farenheit - 32) * 5 / 9;
         return c.toFixed(1);
     }
 
     //convert all temperature values from c to f and viceverse
-    function convertTemp(temp, temp1, temp2, temp3, temp4, temp5, temp6, minTemp, maxTemp) {
+    const handdleTemp = (temp, temp1, temp2, temp3, temp4, temp5, temp6, minTemp, maxTemp) => {
         if (isCelsius) {
             setIsCelsius(false);
             setUnit('F');
@@ -175,19 +177,31 @@ function Weather() {
 
     }
     //formatig data 
-    function parseDate(dt) {
+    const parseDate = (dt) => {
         const date = new DateObject(dt * 1000);
         return `${date.weekDay.name} ${date.day} ${date.month.name} ${date.year}`;
     }
     //formating data 
-    function parseDayDate(dt) {
+    const parseDayDate = (dt) => {
         const date = new DateObject(dt * 1000);
         return `${date.weekDay.shortName} ${date.day}`;
+    }
+
+    //Recieve a icon id and make a string reverse to find same property into a bg object
+    const handdleBg = (id) => {
+        let splitS = id.split('');
+        let rArray = splitS.reverse();
+        for (const property in bgObj) {
+            if (property === rArray.join('')) {
+                return bgObj[property]
+            }
+        }
     }
 
     return (
 
         <div className='weather translucid'  >
+            <style>{`html {background: ${bg};}`}</style>
             <Loader
                 visible={displayLoading}
             />
@@ -214,7 +228,7 @@ function Weather() {
                 <div className='footer'>
 
                     <Button
-                        setValue={convertTemp}
+                        setValue={handdleTemp}
                         value={currentTemp}
                         value1={temp1}
                         value2={temp2}

@@ -1,0 +1,20 @@
+{
+    "d10": "linear-gradient(270deg, rgba(34,145,195,1) 0%, rgba(255,186,80,1) 100%)",
+    "d20": "linear-gradient(270deg, rgba(220,234,240,1) 0%, rgba(34,145,195,1) 90%)",
+    "d30": "linear-gradient(270deg, rgba(224,224,224,1) 0%, rgba(199,200,200,1) 90%)",
+    "d40": "linear-gradient(270deg, rgba(224,224,224,1) 29%, rgba(108,108,108,1) 98%)",
+    "d90": "linear-gradient(270deg, rgba(190,241,250,1) 0%, rgba(108,108,108,1) 94%)",
+    "d01": "linear-gradient(270deg, rgba(190,241,250,1) 0%, rgba(198,126,66,1) 87%)",
+    "d11": "linear-gradient(270deg, rgba(227,228,94,1) 0%, rgba(108,103,98,1) 91%)",
+    "d31": "linear-gradient(270deg, rgba(215,255,255,1) 0%, rgba(124,234,255,1) 100%)",
+    "d05": "linear-gradient(270deg, rgba(173,173,173,1) 0%, rgba(204,204,204,1) 100%)",
+    "n10": "linear-gradient(270deg, rgba(119,119,119,1) 0%, rgba(93,93,96,1) 100%)",
+    "n20": "linear-gradient(270deg, rgba(205,205,205,1) 0%, rgba(187,187,188,1) 53%, rgba(93,93,96,1) 100%)",
+    "n30": "linear-gradient(270deg, rgba(167,167,167,1) 0%, rgba(93,93,96,1) 100%)",
+    "n40": "linear-gradient(270deg, rgba(148,148,148,1) 0%, rgba(33,33,33,1) 100%)",
+    "n90": "linear-gradient(270deg, rgba(31,55,106,1) 0%, rgba(43,43,43,1) 100%)",
+    "n01": "linear-gradient(270deg, rgba(89,109,153,1) 0%, rgba(72,72,74,1) 79%)",
+    "n11": "linear-gradient(270deg, rgba(89,109,153,1) 14%, rgba(92,94,43,1) 48%, rgba(72,72,74,1) 83%)",
+    "n31": "linear-gradient(270deg, rgba(84,151,159,1) 0%, rgba(72,72,74,1) 100%)",
+    "n05": "linear-gradient(270deg, rgba(199,210,212,1) 0%, rgba(72,72,74,1) 100%)"
+}
