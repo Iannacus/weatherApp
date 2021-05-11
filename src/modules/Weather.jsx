@@ -20,6 +20,7 @@ function Weather() {
     const [description, setDescription] = useState('');
     const [ubication, setUbication] = useState('');
     const [currentTemp, setCurrentTemp] = useState(0);
+    const [feelsTemp, setFeelsTemp] = useState(0);
     const [maxTemp, setMaxtemp] = useState(0);
     const [minTemp, setMinTemp] = useState(0);
     const [currentDate, setCurrentDate] = useState('');
@@ -67,10 +68,13 @@ function Weather() {
     useEffect(() => {
         //Load data when data object have api request data 
         if (Object.entries(data).length > 0) {
+            console.log(data);
             SetIsData(true);
+            //Main data
             setDescription(data.current.weather[0].description);
             setIcon(getIconUrl(data.current.weather[0].icon));
             setCurrentTemp(parseCelsius(data.current.temp));
+            setFeelsTemp(parseCelsius(data.current.feels_like))
             setMaxtemp(parseCelsius(data.daily[0].temp.max));
             setMinTemp(parseCelsius(data.daily[0].temp.min));
             setCurrentDate(parseDate(data.current.dt));
@@ -147,11 +151,12 @@ function Weather() {
     }
 
     //convert all temperature values from c to f and viceverse
-    const handdleTemp = (temp, temp1, temp2, temp3, temp4, temp5, temp6, minTemp, maxTemp) => {
+    const handdleTemp = () => {
         if (isCelsius) {
             setIsCelsius(false);
             setUnit('F');
-            setCurrentTemp(toFarenheit(temp));
+            setCurrentTemp(toFarenheit(currentTemp));
+            setFeelsTemp(toFarenheit(feelsTemp));
             setTemp1(toFarenheit(temp1));
             setTemp2(toFarenheit(temp2));
             setTemp3(toFarenheit(temp3));
@@ -164,7 +169,8 @@ function Weather() {
         } else {
             setIsCelsius(true);
             setUnit('C')
-            setCurrentTemp(toCelsius(temp));
+            setCurrentTemp(toCelsius(currentTemp));
+            setFeelsTemp(toCelsius(feelsTemp));
             setTemp1(toCelsius(temp1));
             setTemp2(toCelsius(temp2));
             setTemp3(toCelsius(temp3));
@@ -176,12 +182,12 @@ function Weather() {
         }
 
     }
-    //formatig data 
+    //formatig current Date
     const parseDate = (dt) => {
         const date = new DateObject(dt * 1000);
         return `${date.weekDay.name} ${date.day} ${date.month.name} ${date.year}`;
     }
-    //formating data 
+    //formating daily dates 
     const parseDayDate = (dt) => {
         const date = new DateObject(dt * 1000);
         return `${date.weekDay.shortName} ${date.day}`;
@@ -224,22 +230,19 @@ function Weather() {
                         font={96}
                         unit={unit}
                     />
+                    <div className='feels'>
+                        <p>Feels Like</p>
+                        <Temperature
+                            temp={feelsTemp}
+                            font={16}
+                            unit={unit}
+                        />
+                    </div>
                 </div>
                 <div className='footer'>
 
                     <Button
                         setValue={handdleTemp}
-                        value={currentTemp}
-                        value1={temp1}
-                        value2={temp2}
-                        value3={temp3}
-                        value4={temp4}
-                        value5={temp5}
-                        value6={temp6}
-                        minValue={minTemp}
-                        maxValue={maxTemp}
-
-                        unit={unit}
                     />
                     <div className='minmax'>
                         <Temperature

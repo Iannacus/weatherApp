@@ -1,10 +1,10 @@
 import React from 'react';
 
-function Button({ setValue, value, value1, value2, value3, value4, value5, value6, minValue, maxValue }) {
+function Button({ setValue }) {
     return (
 
         <button onClick={() => {
-            setValue(value, value1, value2, value3, value4, value5, value6, minValue, maxValue);
+            setValue();
         }}
             className='button'> Convert °C/°F </button>
 
