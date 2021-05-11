@@ -3,7 +3,6 @@ import Icon from './Icon';
 import Temperature from './Temperature'
 
 function Daily({ icon, temp, unit, day }) {
-    //console.log(url);
     return (
         <div className='day'>
             <h3>{day}</h3>
