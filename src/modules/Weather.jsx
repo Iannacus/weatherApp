@@ -10,6 +10,7 @@ import Loader from './Loader';
 import Daily from './Daily';
 
 function Weather() {
+
     const [data, setData] = useState({});
     const [geoData, setGeoData] = useState({});
     const [isData, SetIsData] = useState(false);
@@ -46,14 +47,15 @@ function Weather() {
 
 
     useEffect(() => {
+        //get lat and lon form geolocation
         navigator.geolocation.getCurrentPosition(position => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-
+            //openweathere API Request
             fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=c233734c38c406630acd8f156b740270`)
                 .then(response => response.json())
                 .then(info => setData(info));
-
+            //locationiq API request
             fetch(`https://us1.locationiq.com/v1/reverse.php?key=pk.8fbc777f6aa3501fd90aad14920bfd41&lat=${lat}&lon=${lon}&format=json`)
                 .then(response => response.json())
                 .then(info => setGeoData(info));
@@ -61,6 +63,7 @@ function Weather() {
     }, []);
 
     useEffect(() => {
+        //Load data when data object have api request data 
         if (Object.entries(data).length > 0) {
             SetIsData(true);
             setDescription(data.current.weather[0].description);
@@ -69,21 +72,21 @@ function Weather() {
             setMaxtemp(parseCelsius(data.daily[0].temp.max));
             setMinTemp(parseCelsius(data.daily[0].temp.min));
             setCurrentDate(parseDate(data.current.dt));
-
+            //Icons
             setIcon1(getIconUrl(data.daily[1].weather[0].icon));
             setIcon2(getIconUrl(data.daily[2].weather[0].icon));
             setIcon3(getIconUrl(data.daily[3].weather[0].icon));
             setIcon4(getIconUrl(data.daily[4].weather[0].icon));
             setIcon5(getIconUrl(data.daily[5].weather[0].icon));
             setIcon6(getIconUrl(data.daily[6].weather[0].icon));
-
+            //Temperatures
             setTemp1(parseCelsius(data.daily[1].temp.day));
             setTemp2(parseCelsius(data.daily[2].temp.day));
             setTemp3(parseCelsius(data.daily[3].temp.day));
             setTemp4(parseCelsius(data.daily[4].temp.day));
             setTemp5(parseCelsius(data.daily[5].temp.day));
             setTemp6(parseCelsius(data.daily[6].temp.day));
-
+            //Dates
             setDay1(parseDayDate(data.daily[1].dt));
             setDay2(parseDayDate(data.daily[2].dt));
             setDay3(parseDayDate(data.daily[3].dt));
@@ -97,6 +100,7 @@ function Weather() {
 
 
     useEffect(() => {
+        //Get location from lat and lon using locationiq api
         if (Object.entries(geoData).length > 0) {
             SetIsData2(true);
             const county = geoData.address.county === undefined ? '' : geoData.address.county + ', ';
@@ -107,7 +111,7 @@ function Weather() {
         }
     }, [geoData]);
 
-
+    //conditional to know when both apis request is succesufully
     if (isData && isData2) {
         SetIsData(false);
         SetIsData2(false);
@@ -116,14 +120,18 @@ function Weather() {
 
     }
 
+    //get icon url from icon id
     function getIconUrl(icon) {
         return `http://openweathermap.org/img/wn/${icon}@2x.png`
     }
+
+    //convert farenheit temperature gotten from openweathere api
 
     function parseCelsius(t) {
         const temp = t - 273.15;
         return temp.toFixed(1);
     }
+
 
     function toFarenheit(celsius) {
         const f = (celsius * 9 / 5) + 32;
@@ -136,6 +144,7 @@ function Weather() {
         return c.toFixed(1);
     }
 
+    //convert all temperature values from c to f and viceverse
     function convertTemp(temp, temp1, temp2, temp3, temp4, temp5, temp6, minTemp, maxTemp) {
         if (isCelsius) {
             setIsCelsius(false);
@@ -165,12 +174,12 @@ function Weather() {
         }
 
     }
-
+    //formatig data 
     function parseDate(dt) {
         const date = new DateObject(dt * 1000);
         return `${date.weekDay.name} ${date.day} ${date.month.name} ${date.year}`;
     }
-
+    //formating data 
     function parseDayDate(dt) {
         const date = new DateObject(dt * 1000);
         return `${date.weekDay.shortName} ${date.day}`;
